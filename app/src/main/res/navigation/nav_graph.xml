@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/calendarFragment">
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.birthday.navigation.CalendarFragment"
+        android:label="fragment_calendar"
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_calendarFragment_to_addBirthday"
+            app:destination="@id/addBirthday" />
+    </fragment>
+    <fragment
+        android:id="@+id/addBirthday"
+        android:name="com.example.birthday.navigation.AddBirthday"
+        android:label="fragment_add_birthday"
+        tools:layout="@layout/fragment_add_birthday" />
+</navigation>
