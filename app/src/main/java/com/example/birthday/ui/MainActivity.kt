@@ -1,4 +1,4 @@
-package com.example.birthday.navigation
+package com.example.birthday.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".navigation.AddBirthday">
+    tools:context=".ui.AddBirthday">
 
     <EditText
         android:id="@+id/name"
@@ -36,6 +36,8 @@
 
     <DatePicker
         android:id="@+id/date"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin"

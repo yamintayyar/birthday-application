@@ -1,11 +1,11 @@
-package com.example.birthday.navigation
+package com.example.birthday.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.birthday.R
+import androidx.navigation.fragment.findNavController
 import com.example.birthday.databinding.FragmentCalendarBinding
 
 class CalendarFragment : Fragment() {
@@ -24,5 +24,16 @@ class CalendarFragment : Fragment() {
         // Creates binding
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val addBirthdayFAB = binding.addBirthdayButton
+        addBirthdayFAB.setOnClickListener {
+            val action = CalendarFragmentDirections.actionCalendarFragmentToAddBirthday()
+
+            findNavController().navigate(action)
+        }
     }
 }
