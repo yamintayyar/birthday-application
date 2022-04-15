@@ -7,20 +7,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
+import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.core.view.get
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.birthday.BirthdayApplication
 import com.example.birthday.BirthdayViewModel
 import com.example.birthday.BirthdayViewModelFactory
-import com.example.birthday.R
-import com.example.birthday.data.BirthdayDao
 import com.example.birthday.databinding.FragmentAddBirthdayBinding
-import com.example.birthday.databinding.FragmentCalendarBinding
 import kotlinx.android.synthetic.main.fragment_add_birthday.*
 import java.util.*
-import kotlin.properties.Delegates
 
 /**
  * A simple [Fragment] subclass.
@@ -34,6 +31,8 @@ class AddBirthday : Fragment() {
             (activity?.application as BirthdayApplication).database.birthdayDao()
         )
     }
+
+    private val navigationArgs : AddBirthdayArgs by navArgs()
 
     private var _binding: FragmentAddBirthdayBinding? = null
     private val binding get() = _binding!!
@@ -65,10 +64,34 @@ class AddBirthday : Fragment() {
             year = i
         }
 
-        binding.addNewBirthday.setOnClickListener {
-            saveBirthday()
+        val id = navigationArgs.id //gets id argument that was passed while navigating to AddBirthdayFragment (id = -1 by default)
 
-            //TODO: navigate back to CalendarFragment
+        if (id > -1) { //if we passed in an id (navigated to AddBirthdayFragment to edit a birthday, not to make a new one)
+
+            viewModel.getBirthday(id).observe(viewLifecycleOwner) { bday -> //observing the object is necessary, because the return type of
+                //getBirthday() is a LiveData, whose value will be null unless observed, in which case it can be accessed
+                binding.apply {
+                    name.setText(bday.name, TextView.BufferType.EDITABLE)
+                    message.setText(bday.message, TextView.BufferType.EDITABLE)
+
+                    date.updateDate(bday.dateYear, bday.dateMonth, bday.dateDay)
+
+                    addNewBirthday.setOnClickListener {
+
+                        //TODO: add update functionality (make update call in DAO, make update function in viewmodel, and make an update function here)
+
+                        val action = AddBirthdayDirections.actionAddBirthdayToCalendarFragment()
+                        findNavController().navigate(action)
+                    }
+                }
+            }
+        } else {
+            binding.addNewBirthday.setOnClickListener {
+                saveBirthday()
+
+                val action = AddBirthdayDirections.actionAddBirthdayToCalendarFragment()
+                findNavController().navigate(action)
+            }
         }
     }
 
@@ -78,4 +101,6 @@ class AddBirthday : Fragment() {
 
         viewModel.saveBirthday(name, day, month, year, message)
     }
+
+    //TODO: add delete functionality for birthday entries
 }

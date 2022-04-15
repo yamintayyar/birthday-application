@@ -1,13 +1,13 @@
 package com.example.birthday
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.birthday.data.Birthday
 import com.example.birthday.data.BirthdayDao
 import kotlinx.coroutines.launch
 
 class BirthdayViewModel(private val birthdayDao: BirthdayDao) : ViewModel() {
+
+    val allBirthdays : LiveData<List<Birthday>> = birthdayDao.getAll().asLiveData()
 
     fun saveBirthday(
         name: String,
@@ -34,6 +34,10 @@ class BirthdayViewModel(private val birthdayDao: BirthdayDao) : ViewModel() {
             dateYear = year,
             message = message
         )
+    }
+
+    fun getBirthday(id: Int): LiveData<Birthday> {
+        return birthdayDao.getBirthday(id).asLiveData()
     }
 
     private fun insert(birthday: Birthday) {
