@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 
 class BirthdayViewModel(private val birthdayDao: BirthdayDao) : ViewModel() {
 
-    val allBirthdays : LiveData<List<Birthday>> = birthdayDao.getAll().asLiveData()
+    val allBirthdays: LiveData<List<Birthday>> = birthdayDao.getAll().asLiveData()
 
     fun saveBirthday(
         name: String,
@@ -18,6 +18,32 @@ class BirthdayViewModel(private val birthdayDao: BirthdayDao) : ViewModel() {
     ) {
         val bday = getNewBirthday(name, day, month, year, message)
         insert(bday)
+    }
+
+    private fun updateBirthday(birthday: Birthday) {
+        viewModelScope.launch {
+            birthdayDao.update(birthday)
+        }
+    }
+
+    fun updateBirthday(
+        id: Int,
+        name: String,
+        message: String,
+        day: Int,
+        month: Int,
+        year: Int
+    ) {
+        val bday = Birthday(
+            id = id,
+            name = name,
+            message = message,
+            dateDay = day,
+            dateMonth = month,
+            dateYear = year
+        )
+
+        updateBirthday(bday)
     }
 
     private fun getNewBirthday(

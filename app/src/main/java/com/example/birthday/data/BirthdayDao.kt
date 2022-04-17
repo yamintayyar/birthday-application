@@ -13,6 +13,9 @@ interface BirthdayDao {
     @Delete
     suspend fun delete(birthday: Birthday)
 
+    @Update
+    suspend fun update(birthday: Birthday)
+
     @Query("SELECT * FROM birthday")
     fun getAll() : Flow<List<Birthday>>
 
