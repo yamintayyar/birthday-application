@@ -15,6 +15,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.birthday.BirthdayApplication
 import com.example.birthday.BirthdayViewModel
 import com.example.birthday.BirthdayViewModelFactory
+import com.example.birthday.data.Birthday
 import com.example.birthday.databinding.FragmentAddBirthdayBinding
 import kotlinx.android.synthetic.main.fragment_add_birthday.*
 import java.util.*
@@ -40,6 +41,8 @@ class AddBirthday : Fragment() {
     private var day = 0
     private var month = 0
     private var year = 0
+
+    private lateinit var birthday : Birthday
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,30 +81,48 @@ class AddBirthday : Fragment() {
 
                         date.updateDate(bday.dateYear, bday.dateMonth, bday.dateDay)
 
-                        addNewBirthday.setOnClickListener {
+                        saveBirthday.setOnClickListener {
 
-                            updateBirthday(id, binding.name.text.toString(), binding.message.text.toString())
+                            //TODO: do not allow user to save it, and show a dialog box/ message telling them that they need to enter a name if the name is left empty
 
+                            updateBirthday(
+                                id,
+                                binding.name.text.toString(),
+                                binding.message.text.toString()
+                            )
+
+                            val action = AddBirthdayDirections.actionAddBirthdayToCalendarFragment()
+                            findNavController().navigate(action)
+                        }
+
+                        viewModel.getBirthday(id).observe(viewLifecycleOwner) { bday -> //necessary, bc you need to observe the livedata
+                            //to be able to access it and use its value
+                            birthday = bday
+                        }
+
+                        deleteBirthday.visibility = View.VISIBLE
+
+                        deleteBirthday.setOnClickListener {
+                            deleteBirthday(bday)
                             val action = AddBirthdayDirections.actionAddBirthdayToCalendarFragment()
                             findNavController().navigate(action)
                         }
                     }
                 }
         } else {
-            binding.addNewBirthday.setOnClickListener {
-                saveBirthday()
+            binding.saveBirthday.setOnClickListener {
+                viewModel.saveBirthday(
+                    name = binding.name.text.toString(),
+                    day = day,
+                    month = month,
+                    year = year,
+                    message = binding.message.text.toString()
+                )
 
                 val action = AddBirthdayDirections.actionAddBirthdayToCalendarFragment()
                 findNavController().navigate(action)
             }
         }
-    }
-
-    private fun saveBirthday() {
-        val name = binding.name.text.toString()
-        val message = binding.message.text.toString()
-
-        viewModel.saveBirthday(name, day, month, year, message)
     }
 
     private fun updateBirthday(
@@ -112,5 +133,9 @@ class AddBirthday : Fragment() {
         viewModel.updateBirthday(id, name, message, day, month, year)
     }
 
-    //TODO: add delete functionality for birthday entries
+    private fun deleteBirthday(
+        birthday: Birthday,
+    ) {
+        viewModel.deleteBirthday(birthday)
+    }
 }

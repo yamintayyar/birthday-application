@@ -9,6 +9,12 @@ class BirthdayViewModel(private val birthdayDao: BirthdayDao) : ViewModel() {
 
     val allBirthdays: LiveData<List<Birthday>> = birthdayDao.getAll().asLiveData()
 
+    //TODO: make allBirthdays be sorted, from closest to the current date to the farthest to the current date
+
+    //TODO: when the date for a birthday has rolled around, the user should receive a notification notifying them that (name)'s birthday has rolled around,
+    // and the birthday should be added to the end of the list
+
+
     fun saveBirthday(
         name: String,
         day: Int,
@@ -69,6 +75,12 @@ class BirthdayViewModel(private val birthdayDao: BirthdayDao) : ViewModel() {
     private fun insert(birthday: Birthday) {
         viewModelScope.launch {
             birthdayDao.insert(birthday)
+        }
+    }
+
+    fun deleteBirthday(birthday: Birthday) {
+        viewModelScope.launch {
+            birthdayDao.delete(birthday)
         }
     }
 }

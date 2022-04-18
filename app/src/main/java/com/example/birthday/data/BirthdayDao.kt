@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface BirthdayDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(birthday : Birthday)
+    suspend fun insert(birthday: Birthday)
 
     @Delete
     suspend fun delete(birthday: Birthday)
@@ -17,8 +17,8 @@ interface BirthdayDao {
     suspend fun update(birthday: Birthday)
 
     @Query("SELECT * FROM birthday")
-    fun getAll() : Flow<List<Birthday>>
+    fun getAll(): Flow<List<Birthday>>
 
     @Query("SELECT * FROM birthday WHERE id = :id")
-    fun getBirthday(id: Int) : Flow<Birthday>
+    fun getBirthday(id: Int): Flow<Birthday>
 }

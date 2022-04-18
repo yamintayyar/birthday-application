@@ -50,7 +50,7 @@
         tools:text="Date" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/addNewBirthday"
+        android:id="@+id/saveBirthday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/save_birthday"
@@ -58,8 +58,22 @@
         android:layout_marginEnd="@dimen/margin"
         android:layout_marginTop="@dimen/margin_between_elements"
 
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/deleteBirthday"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/date"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/deleteBirthday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_birthday"
+        android:visibility="gone"
+        android:layout_marginStart="@dimen/margin_between_elements"
+        android:layout_marginEnd="@dimen/margin"
+
+        app:layout_constraintTop_toTopOf="@+id/saveBirthday"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/saveBirthday"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

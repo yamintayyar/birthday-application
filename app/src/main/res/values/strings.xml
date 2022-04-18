@@ -5,4 +5,5 @@
     <string name="save_birthday">Save Birthday</string>
     <string name="name_hint">Enter name here</string>
     <string name="message_hint">Enter additional information here (optional)</string>
+    <string name="delete_birthday">Delete Birthday</string>
 </resources>

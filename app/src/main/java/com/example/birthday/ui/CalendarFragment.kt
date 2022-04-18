@@ -48,12 +48,13 @@ class CalendarFragment : Fragment() {
             findNavController().navigate(action)
         }
 
-        val adapter = CalendarListAdapter { //the function assigned to the onClickListener must be passed from outside, because the
-            //ListAdapter does not have access to the navController (because its not a fragment)
-            val action = CalendarFragmentDirections.actionCalendarFragmentToAddBirthday(it)
+        val adapter =
+            CalendarListAdapter { //the function assigned to the onClickListener must be passed from outside, because the
+                //ListAdapter does not have access to the navController (because its not a fragment)
+                val action = CalendarFragmentDirections.actionCalendarFragmentToAddBirthday(it)
 
-            findNavController().navigate(action)
-        }
+                findNavController().navigate(action)
+            }
 
         val recyclerView = binding.recyclerView
 
