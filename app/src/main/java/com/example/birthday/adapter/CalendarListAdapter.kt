@@ -5,12 +5,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.compose.ui.res.stringResource
+import androidx.core.content.res.TypedArrayUtils.getString
 import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 //import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.birthday.R
 import com.example.birthday.data.Birthday
 import com.example.birthday.data.getFormattedDate
 import com.example.birthday.databinding.CalendarItemBinding
@@ -38,7 +41,7 @@ class CalendarListAdapter(val onClicked: (Int) -> (Unit)) :
         @RequiresApi(Build.VERSION_CODES.O)
         fun bind(birthday: Birthday) { //binds text fields according to the item at the position
             binding.apply {
-                name.text = birthday.name + ":"
+                name.text = birthday.name
                 date.text = birthday.getFormattedDate(
                     birthday.dateDay,
                     birthday.dateMonth,

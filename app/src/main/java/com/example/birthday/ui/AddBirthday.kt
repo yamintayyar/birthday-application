@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -20,11 +22,6 @@ import com.example.birthday.databinding.FragmentAddBirthdayBinding
 import kotlinx.android.synthetic.main.fragment_add_birthday.*
 import java.util.*
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AddBirthday.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AddBirthday : Fragment() {
 
     private val viewModel: BirthdayViewModel by activityViewModels {
@@ -41,12 +38,6 @@ class AddBirthday : Fragment() {
     private var day = 0
     private var month = 0
     private var year = 0
-
-    private lateinit var birthday : Birthday
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,52 +66,68 @@ class AddBirthday : Fragment() {
             viewModel.getBirthday(id)
                 .observe(viewLifecycleOwner) { bday -> //observing the object is necessary, because the return type of
                     //getBirthday() is a LiveData, whose value will be null unless observed, in which case it can be accessed
+
                     binding.apply {
                         name.setText(bday.name, TextView.BufferType.EDITABLE)
                         message.setText(bday.message, TextView.BufferType.EDITABLE)
 
                         date.updateDate(bday.dateYear, bday.dateMonth, bday.dateDay)
 
+                        (requireActivity() as AppCompatActivity).supportActionBar?.title = "Edit An Existing Birthday"
+
                         saveBirthday.setOnClickListener {
 
-                            //TODO: do not allow user to save it, and show a dialog box/ message telling them that they need to enter a name if the name is left empty
+                            val name = binding.name.text.toString()
 
-                            updateBirthday(
-                                id,
-                                binding.name.text.toString(),
-                                binding.message.text.toString()
-                            )
+                            if (name == "") { // if the name field is empty, show the user an error
 
-                            val action = AddBirthdayDirections.actionAddBirthdayToCalendarFragment()
-                            findNavController().navigate(action)
-                        }
+                                binding.name.error = "The name can not be left empty. Please input a name to be associated with this birthday."
+                            } else {
 
-                        viewModel.getBirthday(id).observe(viewLifecycleOwner) { bday -> //necessary, bc you need to observe the livedata
-                            //to be able to access it and use its value
-                            birthday = bday
+                                updateBirthday(
+                                    id,
+                                    binding.name.text.toString(),
+                                    binding.message.text.toString()
+                                )
+
+                                val action =
+                                    AddBirthdayDirections.actionAddBirthdayToCalendarFragment()
+                                findNavController().navigate(action)
+                            }
                         }
 
                         deleteBirthday.visibility = View.VISIBLE
 
                         deleteBirthday.setOnClickListener {
                             deleteBirthday(bday)
-                            val action = AddBirthdayDirections.actionAddBirthdayToCalendarFragment()
+                            val action =
+                                AddBirthdayDirections.actionAddBirthdayToCalendarFragment()
                             findNavController().navigate(action)
                         }
                     }
                 }
+
         } else {
             binding.saveBirthday.setOnClickListener {
-                viewModel.saveBirthday(
-                    name = binding.name.text.toString(),
-                    day = day,
-                    month = month,
-                    year = year,
-                    message = binding.message.text.toString()
-                )
 
-                val action = AddBirthdayDirections.actionAddBirthdayToCalendarFragment()
-                findNavController().navigate(action)
+                val name = binding.name.text.toString()
+
+                if (name == "") { // if the name field is empty, show the user an error
+
+                    binding.name.error = "The name can not be left empty. Please input a name to be associated with this birthday."
+                } else {
+
+                    viewModel.saveBirthday(
+                        name = binding.name.text.toString(),
+                        day = day,
+                        month = month,
+                        year = year,
+                        message = binding.message.text.toString()
+                    )
+
+                    val action = AddBirthdayDirections.actionAddBirthdayToCalendarFragment()
+                    findNavController().navigate(action)
+                }
             }
         }
     }

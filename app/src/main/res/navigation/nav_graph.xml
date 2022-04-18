@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/calendarFragment"
         android:name="com.example.birthday.ui.CalendarFragment"
-        android:label="fragment_calendar"
+        android:label="Birthdays"
         tools:layout="@layout/fragment_calendar">
         <action
             android:id="@+id/action_calendarFragment_to_addBirthday"
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/addBirthday"
         android:name="com.example.birthday.ui.AddBirthday"
-        android:label="fragment_add_birthday"
+        android:label="Add A New Birthday"
         tools:layout="@layout/fragment_add_birthday">
         <action
             android:id="@+id/action_addBirthday_to_calendarFragment"
