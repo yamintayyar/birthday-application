@@ -1,5 +1,9 @@
 package com.example.birthday.ui
 
+import android.icu.text.DateFormat.Field.DAY_OF_MONTH
+import android.icu.text.DateFormat.Field.DAY_OF_WEEK
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +24,7 @@ import com.example.birthday.BirthdayViewModelFactory
 import com.example.birthday.data.Birthday
 import com.example.birthday.databinding.FragmentAddBirthdayBinding
 import kotlinx.android.synthetic.main.fragment_add_birthday.*
+import java.time.LocalDateTime
 import java.util.*
 
 class AddBirthday : Fragment() {
@@ -77,6 +82,19 @@ class AddBirthday : Fragment() {
 
                         saveBirthday.setOnClickListener {
 
+                            if (day == 0) { //if the user has not changed the date (the user cannot pick 0) (in case the birthday is the current date)
+
+                                val calendar : Calendar = Calendar.getInstance()
+
+                                val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+                                val currentMonth = calendar.get(Calendar.MONTH)
+                                val currentYear = calendar.get(Calendar.YEAR)
+
+                                day = currentDay
+                                month = currentMonth
+                                year = currentYear
+                            }
+
                             val name = binding.name.text.toString()
 
                             if (name == "") { // if the name field is empty, show the user an error
@@ -109,6 +127,19 @@ class AddBirthday : Fragment() {
 
         } else {
             binding.saveBirthday.setOnClickListener {
+
+                if (day == 0) { //if the user has not changed the date (the user cannot pick 0) (in case the birthday is the current date)
+
+                    val calendar : Calendar = Calendar.getInstance()
+
+                    val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+                    val currentMonth = calendar.get(Calendar.MONTH)
+                    val currentYear = calendar.get(Calendar.YEAR)
+
+                    day = currentDay
+                    month = currentMonth
+                    year = currentYear
+                }
 
                 val name = binding.name.text.toString()
 
