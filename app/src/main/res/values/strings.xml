@@ -6,4 +6,6 @@
     <string name="name_hint">Enter name here</string>
     <string name="message_hint">Enter additional information here (optional)</string>
     <string name="delete_birthday">Delete Birthday</string>
+    <string name="channel_name">birthday_channel</string>
+    <string name="channel_description">birthday_reminder</string>
 </resources>

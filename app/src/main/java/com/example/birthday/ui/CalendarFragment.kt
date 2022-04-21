@@ -23,7 +23,8 @@ class CalendarFragment : Fragment() {
 
     private val viewModel: BirthdayViewModel by activityViewModels {
         BirthdayViewModelFactory(
-            (activity?.application as BirthdayApplication).database.birthdayDao()
+            (activity?.application as BirthdayApplication).database.birthdayDao(),
+            (requireActivity().application as BirthdayApplication)
         )
     }
 
@@ -51,6 +52,8 @@ class CalendarFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        Log.d("GAY", "view created")
 
         val addBirthdayFAB = binding.addBirthdayButton
         addBirthdayFAB.setOnClickListener {
@@ -87,9 +90,9 @@ class CalendarFragment : Fragment() {
             val appendList = mutableListOf<Birthday>()
 
             for (bday in sortedBirthdays) { //adds birthdays to the list to be displayed ONLY if they are still upcoming in the current year
-                if (((bday.dateMonth * 30) + bday.dateDay) < comparableDate) {
+                if ((((bday.dateMonth + 1) * 30) + bday.dateDay) < comparableDate) {
                     appendList.add(bday)
-                } else {
+                } else if ((((bday.dateMonth + 1) * 30) + bday.dateDay) >= comparableDate){ //birthdays from the current day onwards are in order
                     displayList.add(bday)
                 }
             }
@@ -99,6 +102,8 @@ class CalendarFragment : Fragment() {
             }
 
             adapter.submitList(displayList)
+
+            viewModel.checkBirthdays(displayList) //allows app to check for birthdays the first time it is launched
         }
     }
 }

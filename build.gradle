@@ -9,8 +9,9 @@ buildscript {
         kotlin_version = '1.5.31'
         lifecycle_version = '2.3.1'
         material_version = '1.4.0'
-        nav_version = '2.3.5'
+        nav_version = '2.4.2'
         room_version = '2.4.2'
+        work_version = "2.6.0"
     }
     repositories {
         google()
@@ -35,5 +36,3 @@ plugins {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-def nav_version = "2.4.2"

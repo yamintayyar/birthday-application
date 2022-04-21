@@ -31,7 +31,8 @@ class AddBirthday : Fragment() {
 
     private val viewModel: BirthdayViewModel by activityViewModels {
         BirthdayViewModelFactory(
-            (activity?.application as BirthdayApplication).database.birthdayDao()
+            (activity?.application as BirthdayApplication).database.birthdayDao(),
+            (requireActivity().application as BirthdayApplication)
         )
     }
 
