@@ -32,13 +32,6 @@ class BirthdayNotificationWorker(context: Context, params: WorkerParameters) :
     @RequiresApi(Build.VERSION_CODES.N)
     override fun doWork(): Result {
 
-        val intent = Intent(
-            applicationContext,
-            MainActivity::class.java
-        ).apply {  //flags are probably not needed
-            //flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
-
         val birthdays = inputData.getStringArray(birthdays)
         val dates = inputData.getIntArray(dates)
 
@@ -47,9 +40,6 @@ class BirthdayNotificationWorker(context: Context, params: WorkerParameters) :
         val currentMonth = calendar.get(Calendar.MONTH)
         val comparableDate =
             ((currentMonth + 1) * 30) + currentDay //has a date representing the current date that is comparable against the others
-
-        val pendingIntent: PendingIntent = PendingIntent
-            .getActivity(applicationContext, 0, intent, 0)
 
         for (i in birthdays!!.indices) {
             if (dates!![i] == comparableDate) {
@@ -63,7 +53,6 @@ class BirthdayNotificationWorker(context: Context, params: WorkerParameters) :
                         .setContentTitle("Happy Birthday, ${birthdays[i]}!")
                         .setContentText("It's time to wish them a happy birthday!")
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setContentIntent(pendingIntent)
                         .setAutoCancel(true)
 
                 with(NotificationManagerCompat.from(applicationContext)) {
